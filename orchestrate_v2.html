@@ -1,0 +1,812 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d1117;color:#c9d1d9;display:flex;height:100vh;overflow:hidden;font-size:13px}
+.sb{width:196px;min-width:196px;background:#0d1117;border-right:0.5px solid #21262d;display:flex;flex-direction:column}
+.sb-logo{padding:14px 16px;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid #21262d}
+.logo-mark{display:flex;flex-direction:column;gap:2.5px}
+.logo-mark span{display:block;height:2px;background:#58a6ff;border-radius:1px}
+.logo-mark span:nth-child(2){width:70%}
+.logo-mark span:nth-child(3){width:45%}
+.logo-txt{font-size:14px;font-weight:500;color:#e6edf3}
+.sb-sec{padding:14px 12px 4px;font-size:10px;color:#484f58;letter-spacing:.07em;text-transform:uppercase}
+.nav{display:flex;align-items:center;gap:8px;padding:6px 10px;margin:1px 4px;border-radius:6px;cursor:pointer;color:#8b949e;font-size:12px}
+.nav:hover{background:#161b22;color:#c9d1d9}
+.nav.active{background:#1c2128;color:#58a6ff}
+.nav svg{width:14px;height:14px;flex-shrink:0;opacity:.8}
+.badge-num{margin-left:auto;font-size:9px;padding:1px 5px;border-radius:8px;background:#2d1f00;color:#e3b341}
+.sb-foot{margin-top:auto;padding:10px 12px;border-top:0.5px solid #21262d;display:flex;align-items:center;gap:8px}
+.av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;color:#58a6ff;flex-shrink:0;background:#1a3a6b}
+.av-name{font-size:11px;color:#8b949e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-bottom:0.5px solid #21262d;background:#0d1117;gap:12px}
+.tb-left{display:flex;align-items:center;gap:10px}
+.page-title{font-size:15px;font-weight:500;color:#e6edf3}
+.pill{font-size:10px;padding:2px 8px;border-radius:10px;background:#0f2d1a;color:#3fb950;border:0.5px solid #238636}
+.tb-right{display:flex;align-items:center;gap:8px}
+.tb-right input{background:#161b22;border:0.5px solid #30363d;border-radius:6px;padding:5px 10px;color:#c9d1d9;font-size:12px;width:180px;outline:none}
+.tb-right input::placeholder{color:#484f58}
+.btn{font-size:11px;padding:5px 12px;border-radius:6px;cursor:pointer;border:0.5px solid #30363d;background:#161b22;color:#c9d1d9}
+.btn-primary{background:#1a3a6b;border-color:#1f6feb;color:#79b8ff}
+/* Views */
+.view{display:none;flex:1;overflow:hidden}
+.view.active{display:flex}
+/* ── CONTACTS ── */
+.body{flex:1;display:flex;overflow:hidden}
+.cl{width:340px;min-width:340px;border-right:0.5px solid #21262d;display:flex;flex-direction:column;overflow:hidden}
+.cl-header{padding:10px 14px;border-bottom:0.5px solid #21262d;display:flex;align-items:center;justify-content:space-between}
+.cl-title{font-size:11px;color:#8b949e;display:flex;align-items:center;gap:6px}
+.sort-btn{font-size:10px;color:#58a6ff;cursor:pointer;background:#0d1f38;border:0.5px solid #1f4070;padding:2px 8px;border-radius:5px}
+.cl-body{flex:1;overflow-y:auto}
+.contact-row{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-bottom:0.5px solid #21262d;cursor:pointer}
+.contact-row:hover{background:#161b22}
+.contact-row.selected{background:#1c2128;border-left:2px solid #58a6ff}
+.c-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0}
+.c-info{flex:1;min-width:0}
+.c-name{font-size:12px;font-weight:500;color:#e6edf3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-company{font-size:11px;color:#8b949e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-signals{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
+.sig{font-size:9px;padding:1px 6px;border-radius:8px;font-weight:500}
+.sig-booked{background:#0f2d1a;color:#3fb950;border:0.5px solid #238636}
+.sig-web{background:#0d1f38;color:#79b8ff}
+.sig-chat{background:#1a2d3a;color:#56d3f5}
+.sig-li{background:#0d1a38;color:#58a6ff}
+.sig-email{background:#2d1a3d;color:#b392f0}
+.sig-apollo{background:#2d1f00;color:#e3b341}
+.sig-intent{background:#2d0d0d;color:#f97583}
+.c-stage{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.stage-dot{width:7px;height:7px;border-radius:50%}
+.c-time{font-size:9px;color:#484f58}
+.stage-bar{display:flex;gap:3px;padding:10px 14px;border-bottom:0.5px solid #21262d;background:#0d1117}
+.stage-step{flex:1;text-align:center}
+.stage-step .s-label{font-size:9px;color:#484f58;text-transform:uppercase;letter-spacing:.05em}
+.stage-step .s-count{font-size:15px;font-weight:500;color:#e6edf3}
+.stage-step.hl .s-label{color:#58a6ff}
+.stage-step.hl .s-count{color:#58a6ff}
+.detail{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.d-header{padding:14px 18px;border-bottom:0.5px solid #21262d;display:flex;align-items:center;gap:12px}
+.d-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0}
+.d-name{font-size:15px;font-weight:500;color:#e6edf3}
+.d-meta{font-size:12px;color:#8b949e}
+.d-actions{margin-left:auto;display:flex;gap:6px}
+.d-body{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:14px}
+.journey{display:flex;align-items:flex-start;overflow-x:auto;padding-bottom:4px}
+.j-step{display:flex;flex-direction:column;align-items:center;min-width:82px}
+.j-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;border:1.5px solid}
+.j-label{font-size:9px;color:#8b949e;margin-top:4px;text-align:center}
+.j-date{font-size:9px;color:#484f58;margin-top:1px;text-align:center}
+.j-line{flex:1;height:1.5px;background:#21262d;margin-top:16px;min-width:12px}
+.j-step.done .j-icon{border-color:#238636;background:#0f2d1a;color:#3fb950}
+.j-step.active .j-icon{border-color:#1f6feb;background:#0d1f38;color:#58a6ff}
+.j-step.pending .j-icon{border-color:#30363d;background:#161b22;color:#484f58}
+.section{background:#161b22;border:0.5px solid #21262d;border-radius:8px;overflow:hidden}
+.sec-hd{padding:8px 12px;border-bottom:0.5px solid #21262d;font-size:11px;font-weight:500;color:#c9d1d9;display:flex;align-items:center;gap:6px}
+.sec-hd svg{width:13px;height:13px;opacity:.6}
+.sec-bd{padding:10px 12px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tl-item{display:flex;gap:10px;padding:6px 0;border-bottom:0.5px solid #21262d;align-items:flex-start}
+.tl-item:last-child{border-bottom:none}
+.tl-dot{width:6px;height:6px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.tl-txt{font-size:12px;color:#c9d1d9}
+.tl-src{font-size:10px;color:#484f58}
+.tl-time{font-size:10px;color:#484f58;white-space:nowrap}
+.ai-rec{background:#0d1f38;border:0.5px solid #1f4070;border-radius:7px;padding:10px 12px}
+.ai-rec-label{font-size:10px;color:#58a6ff;margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.ai-rec-txt{font-size:12px;color:#c9d1d9;line-height:1.5}
+.mini-stat{background:#0d1117;border:0.5px solid #21262d;border-radius:6px;padding:8px 10px}
+.ms-label{font-size:10px;color:#484f58;margin-bottom:3px}
+.ms-val{font-size:16px;font-weight:500;color:#e6edf3}
+.ms-sub{font-size:10px;color:#8b949e;margin-top:1px}
+.intent-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid #21262d}
+.intent-row:last-child{border-bottom:none}
+.intent-kw{font-size:11px;color:#c9d1d9;flex:1}
+.intent-bar{width:60px;height:4px;background:#21262d;border-radius:2px;overflow:hidden}
+.intent-fill{height:100%;border-radius:2px;background:#f97583}
+.intent-score{font-size:10px;color:#8b949e;min-width:28px;text-align:right}
+
+/* ── SEGMENTS ── */
+.seg-view{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat-card{background:#161b22;border:0.5px solid #21262d;border-radius:8px;padding:12px 14px}
+.stat-lbl{font-size:10px;color:#484f58;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.stat-val{font-size:22px;font-weight:500;color:#e6edf3}
+.stat-sub{font-size:10px;color:#8b949e;margin-top:3px}
+.stat-sub.up{color:#3fb950}
+.stat-sub.dn{color:#f85149}
+.seg-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.seg-card{background:#161b22;border:0.5px solid #21262d;border-radius:8px;overflow:hidden}
+.seg-card-hd{padding:10px 14px;border-bottom:0.5px solid #21262d;display:flex;align-items:center;justify-content:space-between}
+.seg-card-name{font-size:13px;font-weight:500;color:#e6edf3}
+.seg-card-bd{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.seg-metric-row{display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.seg-metric-lbl{color:#8b949e}
+.seg-metric-val{color:#e6edf3;font-weight:500}
+.ch-bar-wrap{margin-top:4px}
+.ch-bar-lbl{display:flex;justify-content:space-between;font-size:10px;color:#484f58;margin-bottom:4px}
+.ch-bar-track{height:5px;background:#21262d;border-radius:3px;overflow:hidden;display:flex;gap:1px}
+.ch-seg{height:100%}
+.ch-legend{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap}
+.ch-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:#8b949e}
+.ch-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.conv-badge{font-size:11px;padding:3px 8px;border-radius:6px}
+.badge-hi{background:#0f2d1a;color:#3fb950}
+.badge-mid{background:#1a2d3a;color:#79b8ff}
+.badge-lo{background:#2d1f00;color:#e3b341}
+
+/* ── CAMPAIGNS ── */
+.camp-view{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
+.camp-tabs{display:flex;gap:4px;background:#161b22;border:0.5px solid #21262d;border-radius:8px;padding:4px;width:fit-content}
+.camp-tab{font-size:12px;padding:5px 14px;border-radius:6px;cursor:pointer;color:#8b949e}
+.camp-tab.active{background:#1c2128;color:#e6edf3}
+.camp-table{background:#161b22;border:0.5px solid #21262d;border-radius:8px;overflow:hidden}
+.ct-head{display:grid;padding:8px 14px;border-bottom:0.5px solid #21262d;font-size:10px;color:#484f58;text-transform:uppercase;letter-spacing:.05em}
+.ct-row{display:grid;padding:10px 14px;border-bottom:0.5px solid #21262d;align-items:center}
+.ct-row:last-child{border-bottom:none}
+.ct-row:hover{background:#1c2128}
+.camp-name{font-size:12px;font-weight:500;color:#e6edf3}
+.camp-meta{font-size:10px;color:#8b949e;margin-top:1px}
+.perf-pill{font-size:10px;padding:2px 8px;border-radius:8px}
+.perf-hi{background:#0f2d1a;color:#3fb950}
+.perf-mid{background:#1a2d3a;color:#79b8ff}
+.perf-lo{background:#2d1f00;color:#e3b341}
+.perf-bad{background:#2d0d0d;color:#f85149}
+.mini-bar{height:4px;border-radius:2px;background:#21262d;overflow:hidden;width:80px}
+.mini-fill{height:100%;border-radius:2px}
+.camp-rec{background:#0d1f38;border:0.5px solid #1f4070;border-radius:7px;padding:12px 14px}
+.camp-rec-hd{font-size:11px;color:#58a6ff;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.camp-rec-items{display:flex;flex-direction:column;gap:6px}
+.camp-rec-item{font-size:12px;color:#c9d1d9;display:flex;gap:8px}
+.rec-dot{width:5px;height:5px;border-radius:50%;background:#58a6ff;margin-top:5px;flex-shrink:0}
+
+/* ── STACK HEALTH ── */
+.stack-view{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
+.tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tool-card{background:#161b22;border:0.5px solid #21262d;border-radius:8px;padding:14px}
+.tool-card.warn{border-color:#9e6a03}
+.tool-card.err{border-color:#f85149}
+.tool-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.tool-name{font-size:13px;font-weight:500;color:#e6edf3}
+.tool-status{font-size:10px;padding:2px 8px;border-radius:8px}
+.ts-ok{background:#0f2d1a;color:#3fb950}
+.ts-warn{background:#2d1f00;color:#e3b341}
+.ts-err{background:#2d0d0d;color:#f85149}
+.tool-metrics{display:flex;flex-direction:column;gap:6px}
+.tm-row{display:flex;justify-content:space-between;font-size:11px}
+.tm-lbl{color:#484f58}
+.tm-val{color:#c9d1d9}
+.tm-val.warn{color:#e3b341}
+.tm-val.err{color:#f85149}
+.tm-val.ok{color:#3fb950}
+.tool-alert{margin-top:8px;padding:7px 9px;background:#1a1000;border:0.5px solid #9e6a03;border-radius:5px;font-size:11px;color:#e3b341;line-height:1.4}
+.tool-ok-note{margin-top:8px;font-size:10px;color:#484f58}
+.ops-rec{background:#0d1f38;border:0.5px solid #1f4070;border-radius:8px;padding:14px}
+.ops-rec-hd{font-size:11px;color:#58a6ff;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.ops-items{display:flex;flex-direction:column;gap:8px}
+.ops-item{display:flex;align-items:flex-start;gap:10px;padding:8px;background:#0d1117;border-radius:6px;border:0.5px solid #21262d}
+.ops-icon{font-size:14px;flex-shrink:0}
+.ops-txt{font-size:12px;color:#c9d1d9;line-height:1.4}
+.ops-src{font-size:10px;color:#484f58;margin-top:2px}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#30363d;border-radius:2px}
+</style></head><body>
+
+<!-- Sidebar -->
+<aside class="sb">
+  <div class="sb-logo">
+    <div class="logo-mark"><span></span><span></span><span></span></div>
+    <span class="logo-txt">Orchestrate</span>
+  </div>
+  <div class="sb-sec">Intelligence</div>
+  <div class="nav active" onclick="show('contacts',this)">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="2.5"/><circle cx="11" cy="6" r="2"/><path d="M1 13c0-2.2 2.2-4 5-4s5 1.8 5 4"/><path d="M11 10c1.7.3 3 1.5 3 3"/></svg>
+    Contacts
+  </div>
+  <div class="nav" onclick="show('funnel',this)">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1,12 5,7 9,10 13,4"/></svg>
+    Funnel
+  </div>
+  <div class="nav" onclick="show('segments',this)">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 6h14"/><path d="M5 6v7"/></svg>
+    Segments
+  </div>
+  <div class="nav" onclick="show('campaigns',this)">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M4 8h8M6 12h4"/></svg>
+    Campaigns
+    <span class="badge-num">2</span>
+  </div>
+  <div class="sb-sec">Operations</div>
+  <div class="nav" onclick="show('stack',this)">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>
+    Stack health
+    <span class="badge-num">1</span>
+  </div>
+  <div class="nav" onclick="show('log',this)">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1v7l3 3"/><circle cx="8" cy="9" r="7"/></svg>
+    Activity log
+  </div>
+  <div class="nav" onclick="show('integrations',this)">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="4" cy="8" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="12" cy="12" r="2"/><path d="M6 7.2L10.2 5M6 8.8L10.2 11"/></svg>
+    Integrations
+  </div>
+  <div class="sb-foot">
+    <div class="av">AK</div>
+    <div class="av-name">Allison Kavanagh</div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tb-left">
+      <span class="page-title" id="page-title">Contacts</span>
+      <span class="pill">● Live</span>
+    </div>
+    <div class="tb-right">
+      <input type="text" placeholder="Search contacts, companies…" />
+      <div class="btn">Filter</div>
+      <div class="btn">Segment ▾</div>
+    </div>
+  </div>
+
+  <!-- CONTACTS VIEW -->
+  <div class="view active" id="view-contacts" style="flex-direction:column">
+    <div class="body">
+      <div class="cl">
+        <div class="stage-bar">
+          <div class="stage-step"><div class="s-label">Sourced</div><div class="s-count">284</div></div>
+          <div class="stage-step"><div class="s-label">Contacted</div><div class="s-count">191</div></div>
+          <div class="stage-step"><div class="s-label">Engaged</div><div class="s-count">63</div></div>
+          <div class="stage-step"><div class="s-label">On site</div><div class="s-count">28</div></div>
+          <div class="stage-step hl"><div class="s-label">Booking</div><div class="s-count">7</div></div>
+        </div>
+        <div class="cl-header">
+          <span class="cl-title">Furthest in funnel first</span>
+          <span class="sort-btn">Sort ▾</span>
+        </div>
+        <div class="cl-body">
+          <div class="contact-row selected" onclick="selectContact(0)">
+            <div class="c-av" style="background:#1a3a6b;color:#79b8ff">MR</div>
+            <div class="c-info">
+              <div class="c-name">Marcus Reid</div>
+              <div class="c-company">Greenfield Logistics · VP Ops</div>
+              <div class="c-signals"><span class="sig sig-booked">Booked demo</span><span class="sig sig-web">Website ×3</span><span class="sig sig-chat">Chat</span><span class="sig sig-intent">Intent</span></div>
+            </div>
+            <div class="c-stage"><div class="stage-dot" style="background:#3fb950"></div><div class="c-time">2h ago</div></div>
+          </div>
+          <div class="contact-row" onclick="selectContact(1)">
+            <div class="c-av" style="background:#2d1a3d;color:#b392f0">SP</div>
+            <div class="c-info">
+              <div class="c-name">Simone Park</div>
+              <div class="c-company">Tidal Health · Head of Ops</div>
+              <div class="c-signals"><span class="sig sig-web">Website ×5</span><span class="sig sig-chat">Chat</span><span class="sig sig-li">LinkedIn reply</span></div>
+            </div>
+            <div class="c-stage"><div class="stage-dot" style="background:#58a6ff"></div><div class="c-time">4h ago</div></div>
+          </div>
+          <div class="contact-row" onclick="selectContact(2)">
+            <div class="c-av" style="background:#0f2d1a;color:#3fb950">DK</div>
+            <div class="c-info">
+              <div class="c-name">Daniel Kowalski</div>
+              <div class="c-company">Arclight Studio · Founder</div>
+              <div class="c-signals"><span class="sig sig-li">LinkedIn ×2</span><span class="sig sig-email">Email opened</span><span class="sig sig-web">Website</span></div>
+            </div>
+            <div class="c-stage"><div class="stage-dot" style="background:#58a6ff"></div><div class="c-time">6h ago</div></div>
+          </div>
+          <div class="contact-row" onclick="selectContact(3)">
+            <div class="c-av" style="background:#2d1f00;color:#e3b341">LT</div>
+            <div class="c-info">
+              <div class="c-name">Leila Torres</div>
+              <div class="c-company">Nova Realty · CEO</div>
+              <div class="c-signals"><span class="sig sig-email">Email ×3</span><span class="sig sig-intent">Intent</span></div>
+            </div>
+            <div class="c-stage"><div class="stage-dot" style="background:#e3b341"></div><div class="c-time">8h ago</div></div>
+          </div>
+          <div class="contact-row" onclick="selectContact(4)">
+            <div class="c-av" style="background:#1a1a1a;color:#8b949e">JM</div>
+            <div class="c-info">
+              <div class="c-name">James Mulvey</div>
+              <div class="c-company">Crest Capital · Partner</div>
+              <div class="c-signals"><span class="sig sig-apollo">Apollo seq.</span><span class="sig sig-li">LinkedIn view</span></div>
+            </div>
+            <div class="c-stage"><div class="stage-dot" style="background:#484f58"></div><div class="c-time">1d ago</div></div>
+          </div>
+          <div class="contact-row" onclick="selectContact(5)">
+            <div class="c-av" style="background:#1a3a6b;color:#79b8ff">YC</div>
+            <div class="c-info">
+              <div class="c-name">Yuki Chen</div>
+              <div class="c-company">Skyline SaaS · CRO</div>
+              <div class="c-signals"><span class="sig sig-email">Email opened</span><span class="sig sig-apollo">Apollo seq.</span></div>
+            </div>
+            <div class="c-stage"><div class="stage-dot" style="background:#484f58"></div><div class="c-time">1d ago</div></div>
+          </div>
+          <div class="contact-row" onclick="selectContact(6)">
+            <div class="c-av" style="background:#2d1a3d;color:#b392f0">RA</div>
+            <div class="c-info">
+              <div class="c-name">Rohan Ahuja</div>
+              <div class="c-company">Folio Works · COO</div>
+              <div class="c-signals"><span class="sig sig-apollo">Apollo seq.</span></div>
+            </div>
+            <div class="c-stage"><div class="stage-dot" style="background:#484f58"></div><div class="c-time">2d ago</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="detail">
+        <div class="d-header">
+          <div class="d-av" id="d-av" style="background:#1a3a6b;color:#79b8ff">MR</div>
+          <div>
+            <div class="d-name" id="d-name">Marcus Reid</div>
+            <div class="d-meta" id="d-meta">VP Operations · Greenfield Logistics · San Francisco, CA</div>
+          </div>
+          <div class="d-actions">
+            <div class="btn">HubSpot ↗</div>
+            <div class="btn btn-primary">Prep for demo ↗</div>
+          </div>
+        </div>
+        <div class="d-body">
+          <div class="section">
+            <div class="sec-hd"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1,12 5,7 9,10 13,4"/></svg>Cross-platform journey</div>
+            <div class="sec-bd">
+              <div class="journey">
+                <div class="j-step done"><div class="j-icon">Apo</div><div class="j-label">Apollo</div><div class="j-date">Mar 10</div></div>
+                <div class="j-line"></div>
+                <div class="j-step done"><div class="j-icon">Ins</div><div class="j-label">Instantly</div><div class="j-date">Mar 12</div></div>
+                <div class="j-line"></div>
+                <div class="j-step done"><div class="j-icon">LI</div><div class="j-label">Dripify</div><div class="j-date">Mar 15</div></div>
+                <div class="j-line"></div>
+                <div class="j-step done"><div class="j-icon">↗</div><div class="j-label">Website ×3</div><div class="j-date">Mar 20</div></div>
+                <div class="j-line"></div>
+                <div class="j-step done"><div class="j-icon">bot</div><div class="j-label">Chat / bot</div><div class="j-date">Mar 22</div></div>
+                <div class="j-line"></div>
+                <div class="j-step active"><div class="j-icon">Cal</div><div class="j-label">Booked</div><div class="j-date">Mar 25</div></div>
+                <div class="j-line"></div>
+                <div class="j-step pending"><div class="j-icon">CRM</div><div class="j-label">HubSpot</div><div class="j-date">—</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="ai-rec">
+              <div class="ai-rec-label"><svg style="width:12px;height:12px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>AI recommendation</div>
+              <div class="ai-rec-txt">Marcus visited pricing twice and asked about onboarding timelines. He's comparing vendors. Lead with ROI and implementation speed. Reference the Greenfield 3PL use case in your demo opener.</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="mini-stat"><div class="ms-label">Touches to booking</div><div class="ms-val">9</div><div class="ms-sub">avg for segment: 11</div></div>
+              <div class="mini-stat"><div class="ms-label">Days in funnel</div><div class="ms-val">15</div><div class="ms-sub">avg: 22 days</div></div>
+              <div class="mini-stat"><div class="ms-label">Best channel</div><div class="ms-val" style="font-size:13px">LinkedIn</div><div class="ms-sub">First reply via LI</div></div>
+              <div class="mini-stat"><div class="ms-label">Intent score</div><div class="ms-val" style="color:#f97583">87</div><div class="ms-sub">High · 3 keywords</div></div>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="section">
+              <div class="sec-hd"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1v7l3 3"/><circle cx="8" cy="9" r="7"/></svg>Activity timeline</div>
+              <div class="sec-bd" style="padding:6px 12px">
+                <div class="tl-item"><div class="tl-dot" style="background:#3fb950"></div><div style="flex:1"><div class="tl-txt">Demo booked for Mar 27, 10am</div><div class="tl-src">Calendly</div></div><div class="tl-time">2h ago</div></div>
+                <div class="tl-item"><div class="tl-dot" style="background:#56d3f5"></div><div style="flex:1"><div class="tl-txt">Asked bot: "How long does onboarding take?"</div><div class="tl-src">Piper / chat</div></div><div class="tl-time">Mar 22</div></div>
+                <div class="tl-item"><div class="tl-dot" style="background:#79b8ff"></div><div style="flex:1"><div class="tl-txt">Visited /pricing, /case-studies (2 sessions)</div><div class="tl-src">Website</div></div><div class="tl-time">Mar 20</div></div>
+                <div class="tl-item"><div class="tl-dot" style="background:#58a6ff"></div><div style="flex:1"><div class="tl-txt">Replied to LinkedIn message sequence</div><div class="tl-src">Dripify</div></div><div class="tl-time">Mar 15</div></div>
+                <div class="tl-item"><div class="tl-dot" style="background:#b392f0"></div><div style="flex:1"><div class="tl-txt">Opened email: "How Greenfield peers cut costs"</div><div class="tl-src">Instantly</div></div><div class="tl-time">Mar 12</div></div>
+                <div class="tl-item"><div class="tl-dot" style="background:#e3b341"></div><div style="flex:1"><div class="tl-txt">Added to outbound sequence — Logistics ICP</div><div class="tl-src">Apollo</div></div><div class="tl-time">Mar 10</div></div>
+              </div>
+            </div>
+            <div class="section">
+              <div class="sec-hd"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M4 8h8M6 12h4"/></svg>Intent signals</div>
+              <div class="sec-bd" style="padding:6px 12px">
+                <div class="intent-row"><span class="intent-kw">logistics software ROI</span><div class="intent-bar"><div class="intent-fill" style="width:92%"></div></div><span class="intent-score">92</span></div>
+                <div class="intent-row"><span class="intent-kw">3PL automation tools</span><div class="intent-bar"><div class="intent-fill" style="width:85%"></div></div><span class="intent-score">85</span></div>
+                <div class="intent-row"><span class="intent-kw">warehouse ops software</span><div class="intent-bar"><div class="intent-fill" style="width:71%"></div></div><span class="intent-score">71</span></div>
+                <div class="intent-row"><span class="intent-kw">supply chain visibility</span><div class="intent-bar"><div class="intent-fill" style="width:58%"></div></div><span class="intent-score">58</span></div>
+                <div style="margin-top:10px;padding:8px;background:#0d1117;border-radius:6px;border:0.5px solid #21262d">
+                  <div style="font-size:10px;color:#484f58;margin-bottom:3px">Segment match</div>
+                  <div style="font-size:12px;color:#c9d1d9">Logistics ops leaders — <span style="color:#3fb950">top 12% converter</span></div>
+                  <div style="font-size:11px;color:#8b949e;margin-top:2px">Best channel: LinkedIn first, then email</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEGMENTS VIEW -->
+  <div class="view" id="view-segments" style="flex-direction:column">
+    <div class="seg-view">
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-lbl">Total segments</div><div class="stat-val">6</div><div class="stat-sub">Across 284 contacts</div></div>
+        <div class="stat-card"><div class="stat-lbl">Best converting</div><div class="stat-val" style="font-size:14px;padding-top:3px">Logistics ops</div><div class="stat-sub up">18% booking rate</div></div>
+        <div class="stat-card"><div class="stat-lbl">Top channel overall</div><div class="stat-val" style="font-size:14px;padding-top:3px">LinkedIn</div><div class="stat-sub up">First reply 61% of time</div></div>
+        <div class="stat-card"><div class="stat-lbl">Underperforming</div><div class="stat-val">1</div><div class="stat-sub dn">SaaS founders · low reply</div></div>
+      </div>
+      <div class="seg-grid">
+
+        <!-- Segment 1 -->
+        <div class="seg-card">
+          <div class="seg-card-hd">
+            <span class="seg-card-name">Logistics ops leaders</span>
+            <span class="conv-badge badge-hi">18% conv.</span>
+          </div>
+          <div class="seg-card-bd">
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Contacts</span><span class="seg-metric-val">54</span></div>
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Avg touches to booking</span><span class="seg-metric-val">9</span></div>
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Avg days in funnel</span><span class="seg-metric-val">18 days</span></div>
+            <div class="ch-bar-wrap">
+              <div class="ch-bar-lbl"><span>Channel mix that drives replies</span></div>
+              <div class="ch-bar-track">
+                <div class="ch-seg" style="width:52%;background:#58a6ff"></div>
+                <div class="ch-seg" style="width:28%;background:#b392f0"></div>
+                <div class="ch-seg" style="width:20%;background:#e3b341"></div>
+              </div>
+              <div class="ch-legend">
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#58a6ff"></div>LinkedIn 52%</div>
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#b392f0"></div>Email 28%</div>
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#e3b341"></div>Apollo 20%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Segment 2 -->
+        <div class="seg-card">
+          <div class="seg-card-hd">
+            <span class="seg-card-name">Health &amp; care ops</span>
+            <span class="conv-badge badge-mid">11% conv.</span>
+          </div>
+          <div class="seg-card-bd">
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Contacts</span><span class="seg-metric-val">41</span></div>
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Avg touches to booking</span><span class="seg-metric-val">13</span></div>
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Avg days in funnel</span><span class="seg-metric-val">26 days</span></div>
+            <div class="ch-bar-wrap">
+              <div class="ch-bar-lbl"><span>Channel mix that drives replies</span></div>
+              <div class="ch-bar-track">
+                <div class="ch-seg" style="width:38%;background:#58a6ff"></div>
+                <div class="ch-seg" style="width:42%;background:#b392f0"></div>
+                <div class="ch-seg" style="width:20%;background:#56d3f5"></div>
+              </div>
+              <div class="ch-legend">
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#58a6ff"></div>LinkedIn 38%</div>
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#b392f0"></div>Email 42%</div>
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#56d3f5"></div>Chat 20%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Segment 3 -->
+        <div class="seg-card">
+          <div class="seg-card-hd">
+            <span class="seg-card-name">Agency &amp; creative founders</span>
+            <span class="conv-badge badge-mid">9% conv.</span>
+          </div>
+          <div class="seg-card-bd">
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Contacts</span><span class="seg-metric-val">38</span></div>
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Avg touches to booking</span><span class="seg-metric-val">11</span></div>
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Avg days in funnel</span><span class="seg-metric-val">21 days</span></div>
+            <div class="ch-bar-wrap">
+              <div class="ch-bar-lbl"><span>Channel mix that drives replies</span></div>
+              <div class="ch-bar-track">
+                <div class="ch-seg" style="width:44%;background:#58a6ff"></div>
+                <div class="ch-seg" style="width:35%;background:#b392f0"></div>
+                <div class="ch-seg" style="width:21%;background:#e3b341"></div>
+              </div>
+              <div class="ch-legend">
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#58a6ff"></div>LinkedIn 44%</div>
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#b392f0"></div>Email 35%</div>
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#e3b341"></div>Apollo 21%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Segment 4 -->
+        <div class="seg-card">
+          <div class="seg-card-hd">
+            <span class="seg-card-name">Real estate &amp; proptech</span>
+            <span class="conv-badge badge-mid">8% conv.</span>
+          </div>
+          <div class="seg-card-bd">
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Contacts</span><span class="seg-metric-val">47</span></div>
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Avg touches to booking</span><span class="seg-metric-val">14</span></div>
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Avg days in funnel</span><span class="seg-metric-val">29 days</span></div>
+            <div class="ch-bar-wrap">
+              <div class="ch-bar-lbl"><span>Channel mix that drives replies</span></div>
+              <div class="ch-bar-track">
+                <div class="ch-seg" style="width:25%;background:#58a6ff"></div>
+                <div class="ch-seg" style="width:55%;background:#b392f0"></div>
+                <div class="ch-seg" style="width:20%;background:#e3b341"></div>
+              </div>
+              <div class="ch-legend">
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#58a6ff"></div>LinkedIn 25%</div>
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#b392f0"></div>Email 55%</div>
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#e3b341"></div>Apollo 20%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Segment 5 -->
+        <div class="seg-card">
+          <div class="seg-card-hd">
+            <span class="seg-card-name">Finance &amp; capital partners</span>
+            <span class="conv-badge badge-lo">6% conv.</span>
+          </div>
+          <div class="seg-card-bd">
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Contacts</span><span class="seg-metric-val">62</span></div>
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Avg touches to booking</span><span class="seg-metric-val">17</span></div>
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Avg days in funnel</span><span class="seg-metric-val">34 days</span></div>
+            <div class="ch-bar-wrap">
+              <div class="ch-bar-lbl"><span>Channel mix that drives replies</span></div>
+              <div class="ch-bar-track">
+                <div class="ch-seg" style="width:30%;background:#58a6ff"></div>
+                <div class="ch-seg" style="width:50%;background:#b392f0"></div>
+                <div class="ch-seg" style="width:20%;background:#e3b341"></div>
+              </div>
+              <div class="ch-legend">
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#58a6ff"></div>LinkedIn 30%</div>
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#b392f0"></div>Email 50%</div>
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#e3b341"></div>Apollo 20%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Segment 6 — underperforming -->
+        <div class="seg-card" style="border-color:#9e6a03">
+          <div class="seg-card-hd" style="border-color:#9e6a03">
+            <span class="seg-card-name">SaaS founders</span>
+            <span class="conv-badge" style="background:#2d1f00;color:#e3b341">3% conv. ⚑</span>
+          </div>
+          <div class="seg-card-bd">
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Contacts</span><span class="seg-metric-val">42</span></div>
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Avg touches to booking</span><span class="seg-metric-val" style="color:#e3b341">22</span></div>
+            <div class="seg-metric-row"><span class="seg-metric-lbl">Avg days in funnel</span><span class="seg-metric-val" style="color:#e3b341">41 days</span></div>
+            <div class="ch-bar-wrap">
+              <div class="ch-bar-lbl"><span>Channel mix that drives replies</span></div>
+              <div class="ch-bar-track">
+                <div class="ch-seg" style="width:20%;background:#58a6ff"></div>
+                <div class="ch-seg" style="width:65%;background:#b392f0"></div>
+                <div class="ch-seg" style="width:15%;background:#e3b341"></div>
+              </div>
+              <div class="ch-legend">
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#58a6ff"></div>LinkedIn 20%</div>
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#b392f0"></div>Email 65%</div>
+                <div class="ch-leg-item"><div class="ch-dot" style="background:#e3b341"></div>Apollo 15%</div>
+              </div>
+            </div>
+            <div style="margin-top:6px;padding:7px 9px;background:#1a1000;border:0.5px solid #9e6a03;border-radius:5px;font-size:11px;color:#e3b341">AI: Shift to LinkedIn-first. SaaS founders respond poorly to cold email at this volume.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- CAMPAIGNS VIEW -->
+  <div class="view" id="view-campaigns" style="flex-direction:column">
+    <div class="camp-view">
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-lbl">Active campaigns</div><div class="stat-val">11</div><div class="stat-sub">7 LinkedIn · 4 email</div></div>
+        <div class="stat-card"><div class="stat-lbl">Avg reply rate</div><div class="stat-val">14%</div><div class="stat-sub up">+2.1% vs last month</div></div>
+        <div class="stat-card"><div class="stat-lbl">Avg open rate</div><div class="stat-val">38%</div><div class="stat-sub up">Email campaigns</div></div>
+        <div class="stat-card"><div class="stat-lbl">Underperforming</div><div class="stat-val">2</div><div class="stat-sub dn">Below 5% reply rate</div></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div class="camp-tabs">
+          <div class="camp-tab active" onclick="campTab('all',this)">All</div>
+          <div class="camp-tab" onclick="campTab('li',this)">LinkedIn</div>
+          <div class="camp-tab" onclick="campTab('email',this)">Email</div>
+        </div>
+      </div>
+      <div class="camp-table">
+        <div class="ct-head" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 80px">
+          <span>Campaign</span><span>Channel</span><span>Sent</span><span>Reply rate</span><span>Booked</span><span>Status</span>
+        </div>
+        <div class="ct-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 80px">
+          <div><div class="camp-name">Logistics ICP — ROI angle</div><div class="camp-meta">Apollo + Instantly · Mar 10</div></div>
+          <span class="sig sig-email" style="width:fit-content">Email</span>
+          <span style="font-size:12px;color:#c9d1d9">184</span>
+          <div><div style="font-size:12px;color:#3fb950;font-weight:500">22%</div><div class="mini-bar" style="margin-top:4px"><div class="mini-fill" style="width:88%;background:#3fb950"></div></div></div>
+          <span style="font-size:12px;color:#c9d1d9">8</span>
+          <span class="perf-pill perf-hi">Strong</span>
+        </div>
+        <div class="ct-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 80px">
+          <div><div class="camp-name">Health ops — peer benchmarks</div><div class="camp-meta">Dripify · Mar 12</div></div>
+          <span class="sig sig-li" style="width:fit-content">LinkedIn</span>
+          <span style="font-size:12px;color:#c9d1d9">97</span>
+          <div><div style="font-size:12px;color:#3fb950;font-weight:500">19%</div><div class="mini-bar" style="margin-top:4px"><div class="mini-fill" style="width:76%;background:#3fb950"></div></div></div>
+          <span style="font-size:12px;color:#c9d1d9">5</span>
+          <span class="perf-pill perf-hi">Strong</span>
+        </div>
+        <div class="ct-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 80px">
+          <div><div class="camp-name">Agency founders — time savings</div><div class="camp-meta">Dripify · Mar 14</div></div>
+          <span class="sig sig-li" style="width:fit-content">LinkedIn</span>
+          <span style="font-size:12px;color:#c9d1d9">112</span>
+          <div><div style="font-size:12px;color:#79b8ff;font-weight:500">14%</div><div class="mini-bar" style="margin-top:4px"><div class="mini-fill" style="width:56%;background:#79b8ff"></div></div></div>
+          <span style="font-size:12px;color:#c9d1d9">4</span>
+          <span class="perf-pill perf-mid">Average</span>
+        </div>
+        <div class="ct-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 80px">
+          <div><div class="camp-name">Finance — compliance pain points</div><div class="camp-meta">Apollo + Instantly · Mar 15</div></div>
+          <span class="sig sig-email" style="width:fit-content">Email</span>
+          <span style="font-size:12px;color:#c9d1d9">143</span>
+          <div><div style="font-size:12px;color:#79b8ff;font-weight:500">11%</div><div class="mini-bar" style="margin-top:4px"><div class="mini-fill" style="width:44%;background:#79b8ff"></div></div></div>
+          <span style="font-size:12px;color:#c9d1d9">3</span>
+          <span class="perf-pill perf-mid">Average</span>
+        </div>
+        <div class="ct-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 80px">
+          <div><div class="camp-name">Real estate — AI ops angle</div><div class="camp-meta">Dripify · Mar 17</div></div>
+          <span class="sig sig-li" style="width:fit-content">LinkedIn</span>
+          <span style="font-size:12px;color:#c9d1d9">88</span>
+          <div><div style="font-size:12px;color:#e3b341;font-weight:500">8%</div><div class="mini-bar" style="margin-top:4px"><div class="mini-fill" style="width:32%;background:#e3b341"></div></div></div>
+          <span style="font-size:12px;color:#c9d1d9">1</span>
+          <span class="perf-pill perf-lo">Weak</span>
+        </div>
+        <div class="ct-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 80px">
+          <div><div class="camp-name">SaaS founders — growth hooks</div><div class="camp-meta">Apollo + Instantly · Mar 18</div></div>
+          <span class="sig sig-email" style="width:fit-content">Email</span>
+          <span style="font-size:12px;color:#c9d1d9">156</span>
+          <div><div style="font-size:12px;color:#f85149;font-weight:500">4%</div><div class="mini-bar" style="margin-top:4px"><div class="mini-fill" style="width:16%;background:#f85149"></div></div></div>
+          <span style="font-size:12px;color:#c9d1d9">1</span>
+          <span class="perf-pill perf-bad">Flagged</span>
+        </div>
+        <div class="ct-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 80px">
+          <div><div class="camp-name">SaaS founders — LinkedIn pivot</div><div class="camp-meta">Dripify · Mar 22 (new)</div></div>
+          <span class="sig sig-li" style="width:fit-content">LinkedIn</span>
+          <span style="font-size:12px;color:#c9d1d9">34</span>
+          <div><div style="font-size:12px;color:#79b8ff;font-weight:500">12%</div><div class="mini-bar" style="margin-top:4px"><div class="mini-fill" style="width:48%;background:#79b8ff"></div></div></div>
+          <span style="font-size:12px;color:#c9d1d9">0</span>
+          <span class="perf-pill perf-mid">Early</span>
+        </div>
+      </div>
+      <div class="camp-rec">
+        <div class="camp-rec-hd"><svg style="width:12px;height:12px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>AI campaign recommendations</div>
+        <div class="camp-rec-items">
+          <div class="camp-rec-item"><div class="rec-dot"></div><div>The "SaaS founders — growth hooks" email campaign is underperforming at 4% reply. Pause it and redirect volume to the new LinkedIn pivot sequence, which is showing early traction at 12% with a smaller send.</div></div>
+          <div class="camp-rec-item"><div class="rec-dot"></div><div>The "Logistics ICP — ROI angle" email sequence is your strongest. Consider cloning the messaging framework and testing it with Finance &amp; Capital partners, who are currently email-heavy but underperforming.</div></div>
+          <div class="camp-rec-item"><div class="rec-dot"></div><div>Real estate reply rates are low on LinkedIn. This segment responds better to email (55% of their channel mix). Test a direct email sequence with a case study hook instead of a cold LI opener.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STACK HEALTH VIEW -->
+  <div class="view" id="view-stack" style="flex-direction:column">
+    <div class="stack-view">
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-lbl">Tools connected</div><div class="stat-val">7</div><div class="stat-sub">of 8 configured</div></div>
+        <div class="stat-card"><div class="stat-lbl">Issues detected</div><div class="stat-val">1</div><div class="stat-sub dn">Instantly deliverability</div></div>
+        <div class="stat-card"><div class="stat-lbl">API calls today</div><div class="stat-val">14.2k</div><div class="stat-sub up">+3.1% vs yesterday</div></div>
+        <div class="stat-card"><div class="stat-lbl">Data freshness</div><div class="stat-val">4 min</div><div class="stat-sub">Last sync ago</div></div>
+      </div>
+      <div class="tool-grid">
+
+        <div class="tool-card">
+          <div class="tool-hd"><span class="tool-name">Apollo</span><span class="tool-status ts-ok">Healthy</span></div>
+          <div class="tool-metrics">
+            <div class="tm-row"><span class="tm-lbl">Contacts sourced today</span><span class="tm-val ok">48</span></div>
+            <div class="tm-row"><span class="tm-lbl">Sequences active</span><span class="tm-val">6</span></div>
+            <div class="tm-row"><span class="tm-lbl">Credits remaining</span><span class="tm-val">1,240</span></div>
+            <div class="tm-row"><span class="tm-lbl">API latency</span><span class="tm-val">210ms</span></div>
+          </div>
+          <div class="tool-ok-note">Last sync: 4 min ago · No issues</div>
+        </div>
+
+        <div class="tool-card warn">
+          <div class="tool-hd"><span class="tool-name">Instantly</span><span class="tool-status ts-warn">Warning</span></div>
+          <div class="tool-metrics">
+            <div class="tm-row"><span class="tm-lbl">Emails sent today</span><span class="tm-val">483</span></div>
+            <div class="tm-row"><span class="tm-lbl">Deliverability rate</span><span class="tm-val warn">81%</span></div>
+            <div class="tm-row"><span class="tm-lbl">Bounce rate</span><span class="tm-val warn">4.2%</span></div>
+            <div class="tm-row"><span class="tm-lbl">Spam complaints</span><span class="tm-val warn">0.4%</span></div>
+          </div>
+          <div class="tool-alert">Bounce rate above 3% threshold. Risk of domain warmup regression. Reduce daily send volume or pause SaaS founders sequence.</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-hd"><span class="tool-name">Dripify</span><span class="tool-status ts-ok">Healthy</span></div>
+          <div class="tool-metrics">
+            <div class="tm-row"><span class="tm-lbl">LI messages sent today</span><span class="tm-val ok">94</span></div>
+            <div class="tm-row"><span class="tm-lbl">Connection req. accepted</span><span class="tm-val ok">31%</span></div>
+            <div class="tm-row"><span class="tm-lbl">Sequences active</span><span class="tm-val">4</span></div>
+            <div class="tm-row"><span class="tm-lbl">Daily limit headroom</span><span class="tm-val">76 remaining</span></div>
+          </div>
+          <div class="tool-ok-note">Last sync: 4 min ago · No issues</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-hd"><span class="tool-name">Piper / chat bot</span><span class="tool-status ts-ok">Healthy</span></div>
+          <div class="tool-metrics">
+            <div class="tm-row"><span class="tm-lbl">Conversations today</span><span class="tm-val ok">17</span></div>
+            <div class="tm-row"><span class="tm-lbl">Qualified to booking</span><span class="tm-val ok">4</span></div>
+            <div class="tm-row"><span class="tm-lbl">Avg response time</span><span class="tm-val">1.2s</span></div>
+            <div class="tm-row"><span class="tm-lbl">Unanswered questions</span><span class="tm-val">2</span></div>
+          </div>
+          <div class="tool-ok-note">2 unanswered Qs flagged for knowledge base update</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-hd"><span class="tool-name">Calendly</span><span class="tool-status ts-ok">Healthy</span></div>
+          <div class="tool-metrics">
+            <div class="tm-row"><span class="tm-lbl">Bookings today</span><span class="tm-val ok">7</span></div>
+            <div class="tm-row"><span class="tm-lbl">No-show rate (30d)</span><span class="tm-val">14%</span></div>
+            <div class="tm-row"><span class="tm-lbl">Avg time to book</span><span class="tm-val">22 min</span></div>
+            <div class="tm-row"><span class="tm-lbl">Next available slot</span><span class="tm-val">Mar 27, 10am</span></div>
+          </div>
+          <div class="tool-ok-note">Last sync: 4 min ago · No issues</div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-hd"><span class="tool-name">HubSpot CRM</span><span class="tool-status ts-ok">Healthy</span></div>
+          <div class="tool-metrics">
+            <div class="tm-row"><span class="tm-lbl">Contacts synced</span><span class="tm-val ok">284</span></div>
+            <div class="tm-row"><span class="tm-lbl">Deals open</span><span class="tm-val">12</span></div>
+            <div class="tm-row"><span class="tm-lbl">Properties mapped</span><span class="tm-val">34 / 34</span></div>
+            <div class="tm-row"><span class="tm-lbl">Sync lag</span><span class="tm-val">~4 min</span></div>
+          </div>
+          <div class="tool-ok-note">Last sync: 4 min ago · No issues</div>
+        </div>
+
+      </div>
+
+      <div class="ops-rec">
+        <div class="ops-rec-hd"><svg style="width:12px;height:12px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>Operational recommendations</div>
+        <div class="ops-items">
+          <div class="ops-item">
+            <div class="ops-icon">⚑</div>
+            <div><div class="ops-txt">Reduce Instantly daily send volume by ~30% or pause the SaaS founders email sequence to protect domain health. Bounce rate at 4.2% risks your sending reputation.</div><div class="ops-src">Source: Instantly · Deliverability monitor</div></div>
+          </div>
+          <div class="ops-item">
+            <div class="ops-icon">→</div>
+            <div><div class="ops-txt">Piper flagged 2 unanswered visitor questions about "integration with existing CRMs" and "pricing for teams." Add these to the bot knowledge base to reduce drop-off.</div><div class="ops-src">Source: Piper / chat bot · Unanswered log</div></div>
+          </div>
+          <div class="ops-item">
+            <div class="ops-icon">→</div>
+            <div><div class="ops-txt">Apollo credits at 1,240 remaining. At current sourcing rate you have ~26 days left. Review your ICP filter to reduce wasted credits on low-intent contacts.</div><div class="ops-src">Source: Apollo · Credit monitor</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Placeholder views -->
+  <div class="view" id="view-funnel" style="flex-direction:column;align-items:center;justify-content:center">
+    <div style="color:#484f58;font-size:13px">Funnel view — coming soon</div>
+  </div>
+  <div class="view" id="view-log" style="flex-direction:column;align-items:center;justify-content:center">
+    <div style="color:#484f58;font-size:13px">Activity log — coming soon</div>
+  </div>
+  <div class="view" id="view-integrations" style="flex-direction:column;align-items:center;justify-content:center">
+    <div style="color:#484f58;font-size:13px">Integrations — coming soon</div>
+  </div>
+
+</div>
+
+<script>
+const titles={contacts:'Contacts',segments:'Segments',campaigns:'Campaigns',stack:'Stack health',funnel:'Funnel',log:'Activity log',integrations:'Integrations'};
+function show(id,el){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav').forEach(n=>n.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('page-title').textContent=titles[id]||id;
+}
+const contacts=[
+  {av:'MR',bg:'#1a3a6b',col:'#79b8ff',name:'Marcus Reid',meta:'VP Operations · Greenfield Logistics · San Francisco, CA'},
+  {av:'SP',bg:'#2d1a3d',col:'#b392f0',name:'Simone Park',meta:'Head of Ops · Tidal Health · Boston, MA'},
+  {av:'DK',bg:'#0f2d1a',col:'#3fb950',name:'Daniel Kowalski',meta:'Founder · Arclight Studio · Austin, TX'},
+  {av:'LT',bg:'#2d1f00',col:'#e3b341',name:'Leila Torres',meta:'CEO · Nova Realty · Miami, FL'},
+  {av:'JM',bg:'#1a1a1a',col:'#8b949e',name:'James Mulvey',meta:'Partner · Crest Capital · New York, NY'},
+  {av:'YC',bg:'#1a3a6b',col:'#79b8ff',name:'Yuki Chen',meta:'CRO · Skyline SaaS · Seattle, WA'},
+  {av:'RA',bg:'#2d1a3d',col:'#b392f0',name:'Rohan Ahuja',meta:'COO · Folio Works · Chicago, IL'}
+];
+function selectContact(i){
+  document.querySelectorAll('.contact-row').forEach((r,j)=>r.classList.toggle('selected',j===i));
+  const c=contacts[i];
+  const a=document.getElementById('d-av');
+  a.textContent=c.av; a.style.background=c.bg; a.style.color=c.col;
+  document.getElementById('d-name').textContent=c.name;
+  document.getElementById('d-meta').textContent=c.meta;
+}
+function campTab(id,el){
+  document.querySelectorAll('.camp-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body></html>
